@@ -46,8 +46,8 @@ val zillowPage = context.pages().firstOrNull { page ->
 }
 
 // Extract DOM content using Locators
-val propertyCards = page.locator("article[data-test='property-card']")
-val address = propertyCards.nth(i).locator("[data-test='property-address']").innerText()
+val propertyCards = page.locator("div[data-testid='property-card-data']")
+val address = propertyCards.nth(i).locator("address").innerText()
 ```
 
 ---

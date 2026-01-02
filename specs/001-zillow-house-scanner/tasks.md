@@ -80,20 +80,20 @@
 
 ### Implementation for User Story 1
 
-- [ ] T026 [US1] Create PropertyScanner interface in app/src/main/kotlin/org/example/application/PropertyScanner.kt
-- [ ] T027 [US1] Implement PlaywrightScanner.connect() in
+- [x] T026 [US1] Create PropertyScanner interface in app/src/main/kotlin/org/example/application/PropertyScanner.kt
+- [x] T027 [US1] Implement PlaywrightScanner.connect() in
   app/src/main/kotlin/org/example/infrastructure/browser/PlaywrightScanner.kt
-- [ ] T028 [US1] Implement PlaywrightScanner.findZillowPage() in
+- [x] T028 [US1] Implement PlaywrightScanner.findZillowPage() in
   app/src/main/kotlin/org/example/infrastructure/browser/PlaywrightScanner.kt
-- [ ] T029 [US1] Implement PlaywrightScanner.scan() with DOM extraction in
+- [x] T029 [US1] Implement PlaywrightScanner.scan() with pagination support in
   app/src/main/kotlin/org/example/infrastructure/browser/PlaywrightScanner.kt
-- [ ] T030 [US1] Implement PlaywrightScanner.disconnect() in
+- [x] T030 [US1] Implement PlaywrightScanner.disconnect() in
   app/src/main/kotlin/org/example/infrastructure/browser/PlaywrightScanner.kt
-- [ ] T031 [US1] Create ScanCommand with table output in app/src/main/kotlin/org/example/cli/ScanCommand.kt
-- [ ] T032 [US1] Add --json flag support to ScanCommand in app/src/main/kotlin/org/example/cli/ScanCommand.kt
-- [ ] T033 [US1] Wire ScanCommand into Main.kt in app/src/main/kotlin/org/example/cli/Main.kt
-- [ ] T034 [US1] Add error handling for Chrome connection failure in app/src/main/kotlin/org/example/cli/ScanCommand.kt
-- [ ] T035 [US1] Add error handling for no Zillow tab found in app/src/main/kotlin/org/example/cli/ScanCommand.kt
+- [x] T031 [US1] Create ScanCommand with table output in app/src/main/kotlin/org/example/cli/ScanCommand.kt
+- [x] T032 [US1] Add --json and --all-pages flag support to ScanCommand in app/src/main/kotlin/org/example/cli/ScanCommand.kt
+- [x] T033 [US1] Wire ScanCommand into Main.kt in app/src/main/kotlin/org/example/cli/Main.kt
+- [x] T034 [US1] Add error handling for Chrome connection failure in app/src/main/kotlin/org/example/cli/ScanCommand.kt
+- [x] T035 [US1] Add error handling for no Zillow tab found in app/src/main/kotlin/org/example/cli/ScanCommand.kt
 
 **Checkpoint**: User Story 1 complete - `scan` command works independently
 

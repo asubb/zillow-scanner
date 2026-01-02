@@ -70,15 +70,16 @@ As a real estate researcher, I want the system to update existing property recor
 - **FR-001**: System MUST connect to a running Chrome instance via its remote debugging port.
 - **FR-002**: System MUST identify browser tabs containing Zillow URLs (zillow.com domain).
 - **FR-003**: System MUST extract property listings from a Zillow search results page in list view format.
-- **FR-004**: System MUST capture for each property: address, list price, number of bedrooms, number of bathrooms, square footage, and Zillow URL.
-- **FR-005**: System MUST display extracted data to the terminal in a human-readable format.
-- **FR-006**: System MUST export property data to a Google Spreadsheet.
-- **FR-007**: System MUST match existing properties by address to prevent duplicates.
-- **FR-008**: System MUST update existing spreadsheet rows when a matching property is found.
-- **FR-009**: System MUST add a timestamp column indicating when each property was last scanned.
-- **FR-010**: System MUST provide clear error messages when Chrome connection fails.
-- **FR-011**: System MUST provide clear error messages when Google Sheets authentication fails.
-- **FR-012**: System MUST allow configuration of which property fields to export (e.g., user can choose to exclude square footage). Column names match field names and export order is fixed.
+- **FR-004**: System MUST handle multi-page pagination to scan all available search results.
+- **FR-005**: System MUST capture for each property: address, list price, number of bedrooms, number of bathrooms, square footage, and Zillow URL.
+- **FR-006**: System MUST display extracted data to the terminal in a human-readable format.
+- **FR-007**: System MUST export property data to a Google Spreadsheet.
+- **FR-008**: System MUST match existing properties by address to prevent duplicates.
+- **FR-009**: System MUST update existing spreadsheet rows when a matching property is found.
+- **FR-010**: System MUST add a timestamp column indicating when each property was last scanned.
+- **FR-011**: System MUST provide clear error messages when Chrome connection fails.
+- **FR-012**: System MUST provide clear error messages when Google Sheets authentication fails.
+- **FR-013**: System MUST allow configuration of which property fields to export (e.g., user can choose to exclude square footage). Column names match field names and export order is fixed.
 
 ### Key Entities
 
