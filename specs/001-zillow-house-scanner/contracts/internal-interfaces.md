@@ -3,7 +3,8 @@
 **Date**: 2026-01-02
 **Feature**: 001-zillow-house-scanner
 
-This application is a CLI tool with no external API. This document defines the internal interfaces between layers (Application ↔ Infrastructure).
+This application is a CLI tool with no external API. This document defines the internal interfaces between layers (
+Application ↔ Infrastructure).
 
 ---
 
@@ -86,13 +87,14 @@ interface PropertyExporter {
 
 Thrown when Chrome browser connection fails.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| message | String | Human-readable error description |
-| port | Int | The debug port that was attempted |
-| cause | Throwable? | Underlying exception if any |
+| Field   | Type       | Description                       |
+|---------|------------|-----------------------------------|
+| message | String     | Human-readable error description  |
+| port    | Int        | The debug port that was attempted |
+| cause   | Throwable? | Underlying exception if any       |
 
 **User-facing message format**:
+
 ```
 Could not connect to Chrome on port {port}.
 Please start Chrome with: --remote-debugging-port={port}
@@ -104,13 +106,14 @@ Please start Chrome with: --remote-debugging-port={port}
 
 Thrown when Google Sheets authentication fails.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| message | String | Human-readable error description |
-| credentialsPath | String | Path to credentials file that was used |
-| cause | Throwable? | Underlying exception if any |
+| Field           | Type       | Description                            |
+|-----------------|------------|----------------------------------------|
+| message         | String     | Human-readable error description       |
+| credentialsPath | String     | Path to credentials file that was used |
+| cause           | Throwable? | Underlying exception if any            |
 
 **User-facing message format**:
+
 ```
 Google Sheets authentication failed.
 Please check your credentials file: {credentialsPath}
@@ -122,12 +125,13 @@ Please check your credentials file: {credentialsPath}
 
 Thrown when the configured spreadsheet cannot be accessed.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| message | String | Human-readable error description |
+| Field         | Type   | Description                           |
+|---------------|--------|---------------------------------------|
+| message       | String | Human-readable error description      |
 | spreadsheetId | String | The spreadsheet ID that was not found |
 
 **User-facing message format**:
+
 ```
 Could not access spreadsheet: {spreadsheetId}
 Please verify the ID and ensure the service account has access.
@@ -189,7 +193,7 @@ google:
 # Optional
 export:
   fields: string[]          # Default: all fields
-                            # Valid values: address, price, beds, baths, sqft, url, last_scanned
+  # Valid values: address, price, beds, baths, sqft, url, last_scanned
 
 chrome:
   debug_port: integer       # Default: 9222
