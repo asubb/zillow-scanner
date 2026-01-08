@@ -39,6 +39,15 @@ testing {
     suites {
         val test by getting(JvmTestSuite::class) {
             useKotlinTest("2.2.0")
+            targets.all {
+                testTask.configure {
+                    testLogging {
+                        events("passed", "skipped", "failed")
+                        showStandardStreams = true
+                        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+                    }
+                }
+            }
         }
     }
 }
