@@ -31,16 +31,26 @@ A Kotlin-based command-line tool that extracts property listings from an active 
 
 ## Configuration
 
-Create a `config.yaml` file (default location: `~/.zillow-scanner/config.yaml`):
+1. Copy the example configuration file:
+   ```bash
+   cp config.yaml.example config.yaml
+   ```
+
+2. Edit `config.yaml` with your Google Spreadsheet ID and the path to your service account credentials.
 
 ```yaml
-google:
-  credentials_file: "path/to/your/service-account.json"
-  spreadsheet_id: "your-google-spreadsheet-id"
-  sheet_name: "Properties"
-
-chrome:
-  debug_port: 9222
+googleCredentialsFile: "path/to/your/service-account.json"
+spreadsheetId: "your-google-spreadsheet-id"
+sheetName: "Properties"
+exportFields:
+  - "address"
+  - "price"
+  - "beds"
+  - "baths"
+  - "sqft"
+  - "url"
+  - "lastScanned"
+chromeDebugPort: 9222
 ```
 
 ## User Guide
@@ -82,9 +92,19 @@ To get JSON output:
 ```
 
 #### Export to Google Sheets
-To scan and save results to your spreadsheet:
+To scan and save results to your spreadsheet (uses `config.yaml` from current directory by default):
 ```bash
 ./gradlew run --args="export"
+```
+
+To scan all pages and export:
+```bash
+./gradlew run --args="export --all-pages"
+```
+
+To use a specific configuration file:
+```bash
+./gradlew run --args="export --config my-config.yaml"
 ```
 
 Use `--dry-run` to see what would be changed without writing to the sheet:

@@ -1,0 +1,12 @@
+googleCredentialsFile: "credentials.json"
+spreadsheetId: "1_R6A3v2f_N4E8vI4e_X_Z_B_C_D_E_F_G_H_I_J" # Replace with your real Spreadsheet ID
+sheetName: "Properties"
+exportFields:
+  - "address"
+  - "price"
+  - "beds"
+  - "baths"
+  - "sqft"
+  - "url"
+  - "lastScanned"
+chromeDebugPort: 9222

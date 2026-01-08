@@ -11,15 +11,30 @@ import kotlinx.serialization.json.Json
 import org.example.domain.BrowserConnectionException
 import org.example.domain.ScanResult
 import org.example.infrastructure.browser.PlaywrightScanner
+import java.io.File
 
 class ScanCommand : CliktCommand(name = "scan") {
     override fun help(context: Context): String = "Scans the current Zillow tab and displays results"
+    
+    private val defaultConfigPath = File(System.getProperty("user.home"), ".zillow-scanner/config.yaml").absolutePath
+    private val configPath by option("--config", help = "Path to config YAML file").default(defaultConfigPath)
     private val json by option("--json", help = "Output in JSON format instead of table").flag()
     private val allPages by option("--all-pages", help = "Scan all pagination pages").flag()
     private val port by option("--port", help = "Chrome debug port").convert { it.toInt() }.default(9222)
 
     override fun run() {
-        val scanner = PlaywrightScanner(port)
+        // Load port from config if file exists, otherwise use the port option (default 9222)
+        val finalPort = if (File(configPath).exists()) {
+            try {
+                org.example.infrastructure.config.AppConfig.load(configPath).chromeDebugPort
+            } catch (e: Exception) {
+                port
+            }
+        } else {
+            port
+        }
+
+        val scanner = PlaywrightScanner(finalPort)
         
         try {
             scanner.connect()

@@ -10,7 +10,7 @@ data class AppConfig(
     val googleCredentialsFile: String,
     val spreadsheetId: String,
     val sheetName: String = "Properties",
-    val exportFields: List<String> = emptyList(),
+    val exportFields: List<String> = listOf("address", "price", "beds", "baths", "sqft", "url", "lastScanned"),
     val chromeDebugPort: Int = 9222
 ) {
     companion object {

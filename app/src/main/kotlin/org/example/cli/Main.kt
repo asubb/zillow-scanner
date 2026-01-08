@@ -9,5 +9,5 @@ class ZillowScannerCommand : CliktCommand(name = "zillow-scanner") {
 }
 
 fun main(args: Array<String>) = ZillowScannerCommand()
-    .subcommands(ScanCommand())
+    .subcommands(ScanCommand(), ExportCommand())
     .main(args)

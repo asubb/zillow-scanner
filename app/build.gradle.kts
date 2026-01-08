@@ -27,6 +27,10 @@ dependencies {
     // CLI
     implementation("com.github.ajalt.clikt:clikt:5.0.2")
 
+    // Logging
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
+    implementation("ch.qos.logback:logback-classic:1.5.15")
+
     // Testing
     testImplementation("io.mockk:mockk:1.13.9")
 }

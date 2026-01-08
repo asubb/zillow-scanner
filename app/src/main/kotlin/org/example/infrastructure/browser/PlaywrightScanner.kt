@@ -3,11 +3,14 @@ package org.example.infrastructure.browser
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.application.PropertyScanner
 import org.example.domain.BrowserConnectionException
 import org.example.domain.Property
 import org.example.domain.ScanResult
 import java.time.Instant
+
+private val logger = KotlinLogging.logger {}
 
 class PlaywrightScanner(private val port: Int) : PropertyScanner {
     private var playwright: Playwright? = null
@@ -78,11 +81,13 @@ class PlaywrightScanner(private val port: Int) : PropertyScanner {
         
         val cards = page.locator("div[data-testid='property-card-data']")
         val count = cards.count()
+        logger.debug { "Found $count property cards on current page" }
         
         for (i in 0 until count) {
             try {
                 val card = cards.nth(i)
                 val address = card.locator("address").innerText()
+                logger.debug { "Scanning property: $address" }
                 val price = try { card.locator("[data-test='property-card-price']").innerText() } catch (e: Exception) { null }
                 val url = try { 
                     val href = card.locator("a[data-test='property-card-link']").getAttribute("href")

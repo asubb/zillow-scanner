@@ -79,7 +79,11 @@ As a real estate researcher, I want the system to update existing property recor
 - **FR-010**: System MUST add a timestamp column indicating when each property was last scanned.
 - **FR-011**: System MUST provide clear error messages when Chrome connection fails.
 - **FR-012**: System MUST provide clear error messages when Google Sheets authentication fails.
-- **FR-013**: System MUST allow configuration of which property fields to export (e.g., user can choose to exclude square footage). Column names match field names and export order is fixed.
+- **FR-013**: System MUST allow configuration of which property fields to export.
+- **FR-014**: System MUST include a header row in the Google Spreadsheet if it is empty.
+- **FR-015**: System MUST apply professional formatting to the header row (bold, background color, frozen row).
+- **FR-016**: System MUST assign proper data types to columns (Currency for price, Date for timestamps, Number for metrics).
+- **FR-017**: System MUST enable basic filters on the header row for easy data manipulation.
 
 ### Key Entities
 
@@ -104,3 +108,11 @@ As a real estate researcher, I want the system to update existing property recor
 - **SC-003**: 95% of visible property cards on a Zillow list view page are successfully extracted.
 - **SC-004**: Duplicate detection correctly identifies and updates existing properties 99% of the time.
 - **SC-005**: Users can complete the full workflow (scan + export) on first attempt with provided documentation.
+
+### Logging & Observability
+- The system MUST use `kotlin-logging` for internal logging.
+- `DEBUG` level: Detailed extraction steps, API request/response metadata.
+- `INFO` level: Scan summary, export success/failure counts.
+- `ERROR` level: Connection failures, authentication errors, unexpected API responses.
+- Standard Output: Human-readable CLI messages.
+- Standard Error: Error messages and critical failures.
