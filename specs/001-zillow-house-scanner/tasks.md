@@ -24,16 +24,16 @@
 
 **Purpose**: Project initialization and dependency configuration
 
-- [ ] T001 Add Playwright dependency to app/build.gradle.kts
-- [ ] T002 [P] Add Google Sheets API dependencies to app/build.gradle.kts
-- [ ] T003 [P] Add kaml YAML dependency to app/build.gradle.kts
-- [ ] T004 [P] Add MockK test dependency to app/build.gradle.kts
-- [ ] T005 Create directory structure: app/src/main/kotlin/org/example/domain/
-- [ ] T006 [P] Create directory structure: app/src/main/kotlin/org/example/application/
-- [ ] T007 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/browser/
-- [ ] T008 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/sheets/
-- [ ] T009 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/config/
-- [ ] T010 [P] Create directory structure: app/src/main/kotlin/org/example/cli/
+- [x] T001 Add Playwright dependency to app/build.gradle.kts
+- [x] T002 [P] Add Google Sheets API dependencies to app/build.gradle.kts
+- [x] T003 [P] Add kaml YAML dependency to app/build.gradle.kts
+- [x] T004 [P] Add MockK test dependency to app/build.gradle.kts
+- [x] T005 Create directory structure: app/src/main/kotlin/org/example/domain/
+- [x] T006 [P] Create directory structure: app/src/main/kotlin/org/example/application/
+- [x] T007 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/browser/
+- [x] T008 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/sheets/
+- [x] T009 [P] Create directory structure: app/src/main/kotlin/org/example/infrastructure/config/
+- [x] T010 [P] Create directory structure: app/src/main/kotlin/org/example/cli/
 
 ---
 
@@ -43,17 +43,17 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T011 Write test for Property data class in app/src/test/kotlin/org/example/domain/PropertyTest.kt
-- [ ] T012 Create Property data class in app/src/main/kotlin/org/example/domain/Property.kt
-- [ ] T013 [P] Write test for ScanResult data class in app/src/test/kotlin/org/example/domain/ScanResultTest.kt
-- [ ] T014 [P] Create ScanResult data class in app/src/main/kotlin/org/example/domain/ScanResult.kt
-- [ ] T015 [P] Write test for ExportResult data class in app/src/test/kotlin/org/example/domain/ExportResultTest.kt
-- [ ] T016 [P] Create ExportResult data class in app/src/main/kotlin/org/example/domain/ExportResult.kt
-- [ ] T017 Write test for AppConfig loading in app/src/test/kotlin/org/example/infrastructure/config/AppConfigTest.kt
-- [ ] T018 Create AppConfig data class and loader in app/src/main/kotlin/org/example/infrastructure/config/AppConfig.kt
-- [ ] T019 [P] Create BrowserConnectionException in app/src/main/kotlin/org/example/domain/Exceptions.kt
-- [ ] T020 [P] Create AuthenticationException in app/src/main/kotlin/org/example/domain/Exceptions.kt
-- [ ] T021 [P] Create SpreadsheetNotFoundException in app/src/main/kotlin/org/example/domain/Exceptions.kt
+- [x] T011 Write test for Property data class in app/src/test/kotlin/org/example/domain/PropertyTest.kt
+- [x] T012 Create Property data class in app/src/main/kotlin/org/example/domain/Property.kt
+- [x] T013 [P] Write test for ScanResult data class in app/src/test/kotlin/org/example/domain/ScanResultTest.kt
+- [x] T014 [P] Create ScanResult data class in app/src/main/kotlin/org/example/domain/ScanResult.kt
+- [x] T015 [P] Write test for ExportResult data class in app/src/test/kotlin/org/example/domain/ExportResultTest.kt
+- [x] T016 [P] Create ExportResult data class in app/src/main/kotlin/org/example/domain/ExportResult.kt
+- [x] T017 Write test for AppConfig loading in app/src/test/kotlin/org/example/infrastructure/config/AppConfigTest.kt
+- [x] T018 Create AppConfig data class and loader in app/src/main/kotlin/org/example/infrastructure/config/AppConfig.kt
+- [x] T019 [P] Create BrowserConnectionException in app/src/main/kotlin/org/example/domain/Exceptions.kt
+- [x] T020 [P] Create AuthenticationException in app/src/main/kotlin/org/example/domain/Exceptions.kt
+- [x] T021 [P] Create SpreadsheetNotFoundException in app/src/main/kotlin/org/example/domain/Exceptions.kt
 
 **Checkpoint**: Foundation ready - domain model and config available for all user stories
 
@@ -69,13 +69,13 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T022 [P] [US1] Write unit test for PropertyScanner interface in
+- [x] T022 [P] [US1] Write unit test for PropertyScanner interface in
   app/src/test/kotlin/org/example/application/PropertyScannerTest.kt
-- [ ] T023 [P] [US1] Write unit test for PlaywrightScanner.connect() in
+- [x] T023 [P] [US1] Write unit test for PlaywrightScanner.connect() in
   app/src/test/kotlin/org/example/infrastructure/browser/PlaywrightScannerTest.kt
-- [ ] T024 [P] [US1] Write unit test for PlaywrightScanner.findZillowPage() in
+- [x] T024 [P] [US1] Write unit test for PlaywrightScanner.findZillowPage() in
   app/src/test/kotlin/org/example/infrastructure/browser/PlaywrightScannerTest.kt
-- [ ] T025 [P] [US1] Write unit test for PlaywrightScanner.scan() in
+- [x] T025 [P] [US1] Write unit test for PlaywrightScanner.scan() in
   app/src/test/kotlin/org/example/infrastructure/browser/PlaywrightScannerTest.kt
 
 ### Implementation for User Story 1
@@ -109,13 +109,13 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T036 [P] [US2] Write unit test for PropertyExporter interface in
+- [x] T036 [P] [US2] Write unit test for PropertyExporter interface in
   app/src/test/kotlin/org/example/application/PropertyExporterTest.kt
-- [ ] T037 [P] [US2] Write unit test for GoogleSheetsExporter.connect() in
+- [x] T037 [P] [US2] Write unit test for GoogleSheetsExporter.connect() in
   app/src/test/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporterTest.kt
-- [ ] T038 [P] [US2] Write unit test for GoogleSheetsExporter.readExisting() in
+- [x] T038 [P] [US2] Write unit test for GoogleSheetsExporter.readExisting() in
   app/src/test/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporterTest.kt
-- [ ] T039 [P] [US2] Write unit test for GoogleSheetsExporter.export() append in
+- [x] T039 [P] [US2] Write unit test for GoogleSheetsExporter.export() append in
   app/src/test/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporterTest.kt
 
 ### Implementation for User Story 2
@@ -150,20 +150,20 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T050 [P] [US3] Write unit test for duplicate detection logic in
+- [x] T050 [P] [US3] Write unit test for duplicate detection logic in
   app/src/test/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporterTest.kt
-- [ ] T051 [P] [US3] Write unit test for GoogleSheetsExporter.export() update in
+- [x] T051 [P] [US3] Write unit test for GoogleSheetsExporter.export() update in
   app/src/test/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporterTest.kt
 
 ### Implementation for User Story 3
 
-- [ ] T052 [US3] Implement address matching in GoogleSheetsExporter.readExisting() in
+- [x] T052 [US3] Implement address matching in GoogleSheetsExporter.readExisting() in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T053 [US3] Implement row update logic in GoogleSheetsExporter.export() in
+- [x] T053 [US3] Implement row update logic in GoogleSheetsExporter.export() in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T054 [US3] Update ExportCommand to display update vs insert counts in
+- [x] T054 [US3] Update ExportCommand to display update vs insert counts in
   app/src/main/kotlin/org/example/cli/ExportCommand.kt
-- [ ] T055 [US3] Add timestamp update on re-scan in
+- [x] T055 [US3] Add timestamp update on re-scan in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
 
 **Checkpoint**: User Story 3 complete - deduplication works, existing rows are updated

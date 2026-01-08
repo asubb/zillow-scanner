@@ -55,12 +55,17 @@ class ExportCommand : CliktCommand(name = "export") {
             val exportResult = exporter.export(scanResult.properties, dryRun)
             
             if (dryRun) {
-                echo("[DRY RUN] Would have exported ${exportResult.insertedCount} properties.")
+                echo("[DRY RUN] Would have processed ${scanResult.extractedCount} properties.")
             } else {
                 if (exportResult.failedCount == 0) {
-                    echo("Successfully exported ${exportResult.insertedCount} properties.")
+                    echo("Successfully exported properties.")
+                    echo("  Inserted: ${exportResult.insertedCount}")
+                    echo("  Updated:  ${exportResult.updatedCount}")
                 } else {
-                    echo("Export partially failed. Inserted: ${exportResult.insertedCount}, Failed: ${exportResult.failedCount}", err = true)
+                    echo("Export partially failed.", err = true)
+                    echo("  Inserted: ${exportResult.insertedCount}", err = true)
+                    echo("  Updated:  ${exportResult.updatedCount}", err = true)
+                    echo("  Failed:   ${exportResult.failedCount}", err = true)
                     exportResult.errors.forEach { echo("Error: $it", err = true) }
                 }
             }

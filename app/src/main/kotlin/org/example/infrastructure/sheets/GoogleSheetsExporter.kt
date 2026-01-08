@@ -2,6 +2,7 @@ package org.example.infrastructure.sheets
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
+import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.*
@@ -13,19 +14,51 @@ import org.example.domain.ExportResult
 import org.example.domain.Property
 import org.example.infrastructure.config.AppConfig
 import java.io.FileInputStream
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
-class GoogleSheetsExporter(private val config: AppConfig) : PropertyExporter {
+class GoogleSheetsExporter(
+    private val config: AppConfig,
+    private val sheetsServiceOverride: Sheets? = null
+) : PropertyExporter {
     private val jsonFactory = GsonFactory.getDefaultInstance()
     private val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
     
     private val sheetsService: Sheets by lazy {
-        val credentials = GoogleCredentials.fromStream(FileInputStream(config.googleCredentialsFile))
-            .createScoped(listOf(SheetsScopes.SPREADSHEETS))
-        Sheets.Builder(httpTransport, jsonFactory, HttpCredentialsAdapter(credentials))
-            .setApplicationName("Zillow Scanner")
-            .build()
+        sheetsServiceOverride ?: run {
+            val credentials = GoogleCredentials.fromStream(FileInputStream(config.googleCredentialsFile))
+                .createScoped(listOf(SheetsScopes.SPREADSHEETS))
+            Sheets.Builder(httpTransport, jsonFactory, HttpCredentialsAdapter(credentials))
+                .setApplicationName("Zillow Scanner")
+                .build()
+        }
+    }
+
+    private fun <T> executeWithRetry(action: () -> T): T {
+        var attempt = 0
+        val maxAttempts = 5
+        var waitTime = 1000L // 1 second
+
+        while (true) {
+            try {
+                return action()
+            } catch (e: GoogleJsonResponseException) {
+                attempt++
+                if (attempt >= maxAttempts || (e.statusCode != 429 && e.statusCode != 503)) {
+                    throw e
+                }
+                logger.warn { "Google API error ${e.statusCode}: ${e.statusMessage}. Retrying in ${waitTime}ms (attempt $attempt/$maxAttempts)..." }
+                TimeUnit.MILLISECONDS.sleep(waitTime)
+                waitTime *= 2 // Exponential backoff
+            }
+        }
+    }
+
+    private fun normalizeAddress(address: String?): String {
+        if (address == null) return ""
+        // Replace all whitespace characters (including Unicode such as non-breaking spaces) with a single space
+        return address.split(Regex("[\\s\\p{Z}]+")).filter { it.isNotBlank() }.joinToString(" ").lowercase()
     }
 
     override fun export(properties: List<Property>, dryRun: Boolean): ExportResult {
@@ -74,23 +107,29 @@ class GoogleSheetsExporter(private val config: AppConfig) : PropertyExporter {
         }
 
         val body = ValueRange().setValues(listValues)
-        val range = if (config.sheetName.isNotBlank()) "${config.sheetName}!A1" else "A1"
+        val range = if (config.sheetName.isNotBlank()) config.sheetName else "A:Z"
+        val appendRange = if (config.sheetName.isNotBlank()) "${config.sheetName}!A1" else "A1"
         
         return try {
-            val spreadsheet = sheetsService.spreadsheets().get(config.spreadsheetId).execute()
+            val spreadsheet = executeWithRetry { sheetsService.spreadsheets().get(config.spreadsheetId).execute() }
             val sheet = spreadsheet.sheets.find { it.properties.title == config.sheetName } 
                 ?: spreadsheet.sheets.first()
             val sheetId = sheet.properties.sheetId
+            val sheetTitle = sheet.properties.title
 
-            val currentValues = sheetsService.spreadsheets().values()
-                .get(config.spreadsheetId, range)
-                .execute()
-                .getValues()
+            val currentValuesResponse = executeWithRetry {
+                sheetsService.spreadsheets().values()
+                    .get(config.spreadsheetId, range)
+                    .execute()
+            }
+            val currentValues = currentValuesResponse.getValues()
+            
+            logger.debug { "Fetched ${currentValues?.size ?: 0} rows from range: $range" }
 
             val isNewSheet = currentValues == null || currentValues.isEmpty()
             
             if (isNewSheet) {
-                logger.info { "Sheet appears to be empty. Formatting and performing initial update at $range" }
+                logger.info { "Sheet appears to be empty. Formatting and performing initial update at $appendRange" }
                 applyFormatting(sheetId)
                 
                 val headerRow = config.exportFields.map { it.replaceFirstChar { c -> c.uppercase() } }
@@ -98,20 +137,95 @@ class GoogleSheetsExporter(private val config: AppConfig) : PropertyExporter {
                 valuesWithHeaders.addAll(listValues)
                 val bodyWithHeaders = ValueRange().setValues(valuesWithHeaders)
                 
-                sheetsService.spreadsheets().values()
-                    .update(config.spreadsheetId, range, bodyWithHeaders)
-                    .setValueInputOption("USER_ENTERED")
-                    .execute()
+                executeWithRetry {
+                    sheetsService.spreadsheets().values()
+                        .update(config.spreadsheetId, appendRange, bodyWithHeaders)
+                        .setValueInputOption("USER_ENTERED")
+                        .execute()
+                }
+                
+                ExportResult(properties.size, 0, 0)
             } else {
-                logger.info { "Sheet has data. Appending after existing rows." }
-                sheetsService.spreadsheets().values()
-                    .append(config.spreadsheetId, range, body)
-                    .setValueInputOption("USER_ENTERED")
-                    .setInsertDataOption("INSERT_ROWS")
-                    .execute()
+                logger.info { "Sheet has data. Checking for existing properties." }
+                
+                val headerRow = currentValues!![0].map { it.toString().lowercase() }
+                val addressColumnIndex = headerRow.indexOf("address")
+                
+                if (addressColumnIndex == -1) {
+                    logger.warn { "No 'address' column found in existing sheet. Appending all." }
+                    executeWithRetry {
+                        sheetsService.spreadsheets().values()
+                            .append(config.spreadsheetId, appendRange, body)
+                            .setValueInputOption("USER_ENTERED")
+                            .setInsertDataOption("INSERT_ROWS")
+                            .execute()
+                    }
+                    return ExportResult(properties.size, 0, 0)
+                }
+
+                val addressMap = mutableMapOf<String, Int>()
+                for (i in 1 until currentValues.size) {
+                    val row = currentValues[i]
+                    if (row.size > addressColumnIndex) {
+                        val address = normalizeAddress(row[addressColumnIndex]?.toString())
+                        if (address.isNotBlank()) {
+                            addressMap[address] = i + 1 // 1-based index for Google Sheets (row 1 is header)
+                        }
+                    }
+                }
+
+                var insertedCount = 0
+                var updatedCount = 0
+                
+                val updateRequests = mutableListOf<ValueRange>()
+                val newRows = mutableListOf<List<Any>>()
+                
+                properties.forEachIndexed { index, property ->
+                    val normalizedAddress = normalizeAddress(property.address)
+                    val rowIndex = addressMap[normalizedAddress]
+                    val rowValues = listValues[index]
+
+                    if (rowIndex != null) {
+                        logger.debug { "Queuing update for existing property at row $rowIndex: ${property.address}" }
+                        val updateRange = if (sheetTitle.isNotBlank()) "$sheetTitle!A$rowIndex" else "A$rowIndex"
+                        updateRequests.add(ValueRange().setRange(updateRange).setValues(listOf(rowValues)))
+                        updatedCount++
+                    } else {
+                        logger.debug { "Queuing insertion for new property: ${property.address}" }
+                        newRows.add(rowValues)
+                        insertedCount++
+                    }
+                }
+
+                // Execute updates in batch
+                if (updateRequests.isNotEmpty()) {
+                    logger.info { "Updating $updatedCount existing properties in batch..." }
+                    val batchBody = BatchUpdateValuesRequest()
+                        .setValueInputOption("USER_ENTERED")
+                        .setData(updateRequests)
+                    
+                    executeWithRetry {
+                        sheetsService.spreadsheets().values()
+                            .batchUpdate(config.spreadsheetId, batchBody)
+                            .execute()
+                    }
+                }
+
+                // Execute appends in a single call
+                if (newRows.isNotEmpty()) {
+                    logger.info { "Appending $insertedCount new properties..." }
+                    val appendBody = ValueRange().setValues(newRows)
+                    executeWithRetry {
+                        sheetsService.spreadsheets().values()
+                            .append(config.spreadsheetId, appendRange, appendBody)
+                            .setValueInputOption("USER_ENTERED")
+                            .setInsertDataOption("INSERT_ROWS")
+                            .execute()
+                    }
+                }
+                
+                ExportResult(insertedCount, updatedCount, 0)
             }
-            
-            ExportResult(properties.size, 0, 0)
         } catch (e: Exception) {
             logger.error(e) { "ERROR during Google Sheets export: ${e.message}" }
             ExportResult(0, 0, properties.size, listOf(e.message ?: "Unknown error"))
@@ -162,6 +276,8 @@ class GoogleSheetsExporter(private val config: AppConfig) : PropertyExporter {
         }))
 
         val batchRequest = BatchUpdateSpreadsheetRequest().setRequests(requests)
-        sheetsService.spreadsheets().batchUpdate(config.spreadsheetId, batchRequest).execute()
+        executeWithRetry {
+            sheetsService.spreadsheets().batchUpdate(config.spreadsheetId, batchRequest).execute()
+        }
     }
 }

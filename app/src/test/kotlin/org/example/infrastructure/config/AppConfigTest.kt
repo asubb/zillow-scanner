@@ -51,6 +51,6 @@ class AppConfigTest {
         
         assertEquals("Properties", config.sheetName)
         assertEquals(9222, config.chromeDebugPort)
-        assertEquals(emptyList(), config.exportFields)
+        assertEquals(listOf("address", "price", "beds", "baths", "sqft", "url", "lastScanned"), config.exportFields)
     }
 }
