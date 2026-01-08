@@ -120,20 +120,20 @@
 
 ### Implementation for User Story 2
 
-- [ ] T040 [US2] Create PropertyExporter interface in app/src/main/kotlin/org/example/application/PropertyExporter.kt
-- [ ] T041 [US2] Implement GoogleSheetsExporter.connect() with service account auth in
+- [x] T040 [US2] Create PropertyExporter interface in app/src/main/kotlin/org/example/application/PropertyExporter.kt
+- [x] T041 [US2] Implement GoogleSheetsExporter.connect() with service account auth in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T042 [US2] Implement GoogleSheetsExporter.readExisting() in
+- [x] T042 [US2] Implement GoogleSheetsExporter.readExisting() in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T043 [US2] Implement GoogleSheetsExporter.export() for appending new rows in
+- [x] T043 [US2] Implement GoogleSheetsExporter.export() for appending new rows in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T044 [US2] Implement GoogleSheetsExporter.disconnect() in
+- [x] T044 [US2] Implement GoogleSheetsExporter.disconnect() in
   app/src/main/kotlin/org/example/infrastructure/sheets/GoogleSheetsExporter.kt
-- [ ] T045 [US2] Create ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
-- [ ] T046 [US2] Add --dry-run flag support to ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
-- [ ] T047 [US2] Add --config flag support to ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
-- [ ] T048 [US2] Wire ExportCommand into Main.kt in app/src/main/kotlin/org/example/cli/Main.kt
-- [ ] T049 [US2] Add error handling for Google Sheets auth failure in
+- [x] T045 [US2] Create ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
+- [x] T046 [US2] Add --dry-run flag support to ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
+- [x] T047 [US2] Add --config flag support to ExportCommand in app/src/main/kotlin/org/example/cli/ExportCommand.kt
+- [x] T048 [US2] Wire ExportCommand into Main.kt in app/src/main/kotlin/org/example/cli/Main.kt
+- [x] T049 [US2] Add error handling for Google Sheets auth failure in
   app/src/main/kotlin/org/example/cli/ExportCommand.kt
 
 **Checkpoint**: User Story 2 complete - `export` command works independently (append only)
