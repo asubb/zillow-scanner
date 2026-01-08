@@ -60,26 +60,21 @@ This guide walks you through setting up and using the Zillow House Scanner CLI.
 
 ## Step 2: Configuration
 
-Create the configuration file at `~/.zillow-scanner/config.yaml`:
+Create the configuration file at `config.yaml` (or `~/.zillow-scanner/config.yaml`). **Note**: Use absolute paths for file locations.
 
 ```yaml
-google:
-  credentials_file: ~/.zillow-scanner/service-account.json
-  spreadsheet_id: "YOUR_SPREADSHEET_ID_HERE"
-  sheet_name: "Sheet1"
-
-export:
-  fields:
-    - address
-    - price
-    - beds
-    - baths
-    - sqft
-    - url
-    - last_scanned
-
-chrome:
-  debug_port: 9222
+googleCredentialsFile: "/Users/yourname/.zillow-scanner/service-account.json"
+spreadsheetId: "YOUR_SPREADSHEET_ID_HERE"
+sheetName: "Sheet1"
+chromeDebugPort: 9222
+exportFields:
+  - address
+  - price
+  - beds
+  - baths
+  - sqft
+  - url
+  - lastScanned
 ```
 
 ---
@@ -131,16 +126,13 @@ cd /path/to/zillow-scanner
 **Expected output**:
 
 ```
-Connected to Chrome on port 9222
-Found Zillow tab: https://www.zillow.com/san-francisco-ca/
-Scanning properties...
-
-Found 20 properties:
-
-Address                              Price        Beds  Baths  Sqft
-───────────────────────────────────────────────────────────────────
-123 Main St, San Francisco, CA       $1,200,000   3     2      1,450
-456 Oak Ave, San Francisco, CA       $950,000     2     1      980
+Scanned: https://www.zillow.com/san-francisco-ca/
+Found 20 properties (0 errors)
+--------------------------------------------------------------------------------
+Address                                  | Price           | Bds/Ba/Sqft     | URL
+------------------------------------------------------------------------------------------------------------------------
+123 Main St, San Francisco, CA           | $1,200,000      | 3/2/1,450       | https://www.zillow.com/homedetails/...
+456 Oak Ave, San Francisco, CA           | $950,000        | 2/1/980         | https://www.zillow.com/homedetails/...
 ...
 ```
 
@@ -153,16 +145,13 @@ Address                              Price        Beds  Baths  Sqft
 **Expected output**:
 
 ```
-Connected to Chrome on port 9222
-Found Zillow tab: https://www.zillow.com/san-francisco-ca/
+Connecting to Chrome on port 9222...
 Scanning properties...
-Found 20 properties
-
-Exporting to Google Sheets...
-  Inserted: 15 new properties
-  Updated: 5 existing properties
-
-Export complete!
+Found 20 properties.
+Exporting to Google Sheets (Spreadsheet ID: ...)...
+Successfully exported properties.
+  Inserted: 15
+  Updated:  5
 ```
 
 ### Dry Run (Preview)

@@ -174,12 +174,12 @@
 
 **Purpose**: Final validation and documentation
 
-- [ ] T056 [P] Write integration test for full scan+export workflow in
+- [x] T056 [P] Write integration test for full scan+export workflow in
   app/src/test/kotlin/org/example/integration/ScanAndExportTest.kt
-- [ ] T057 [P] Create sample config.yaml in docs/sample-config.yaml
-- [ ] T058 Validate quickstart.md instructions work end-to-end
-- [ ] T059 Update application.mainClass in app/build.gradle.kts to org.example.cli.MainKt
-- [ ] T060 Run full test suite and fix any failures
+- [x] T057 [P] Create sample config.yaml in docs/sample-config.yaml
+- [x] T058 Validate quickstart.md instructions work end-to-end
+- [x] T059 Update application.mainClass in app/build.gradle.kts to org.example.cli.MainKt
+- [x] T060 Run full test suite and fix any failures
 
 ---
 

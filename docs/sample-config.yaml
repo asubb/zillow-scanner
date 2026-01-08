@@ -1,0 +1,21 @@
+# Google Service Account credentials JSON file path
+googleCredentialsFile: "credentials.json"
+
+# Google Spreadsheet ID (from URL)
+spreadsheetId: "your-spreadsheet-id-here"
+
+# Name of the sheet to export to
+sheetName: "Properties"
+
+# Port where Chrome is running with --remote-debugging-port=9222
+chromeDebugPort: 9222
+
+# Fields to export to the sheet (defines column order)
+exportFields:
+  - "address"
+  - "price"
+  - "beds"
+  - "baths"
+  - "sqft"
+  - "url"
+  - "lastScanned"
